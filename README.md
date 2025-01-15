@@ -48,3 +48,12 @@ npx playwright test --browser=firefox --headless --reporter=html
 
 These options provide flexibility in how you run your tests, allowing you to tailor the execution to your specific requirements.
 
+## Viewing Test Reports
+
+After running your tests, you can view the test reports in your browser. Playwright provides a convenient way to generate and view these reports using the following command:
+
+```sh
+npx playwright show-report
+```
+
+This command opens the test report in your default web browser, allowing you to see detailed information about the test run, including passed and failed tests, error messages, and execution times. This visual representation helps you quickly identify and address any issues in your tests.
