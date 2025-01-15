@@ -57,3 +57,28 @@ npx playwright show-report
 ```
 
 This command opens the test report in your default web browser, allowing you to see detailed information about the test run, including passed and failed tests, error messages, and execution times. This visual representation helps you quickly identify and address any issues in your tests.
+
+## Viewing Test Execution in the Browser
+
+To view the execution of your tests in the browser, you can disable headless mode. By default, Playwright runs tests in headless mode, which means the browser window is not displayed. To see the browser window during test execution, use the `--headed` option:
+
+```sh
+```sh
+npx playwright test --headed
+```
+## Playwright Test Runner UI
+
+Playwright also provides a graphical user interface (UI) for running and debugging tests. This UI makes it easier to visualize and interact with your tests. To start the Playwright Test Runner UI, use the following command:
+
+```sh
+npx playwright test --ui
+```
+
+This command opens the Playwright Test Runner UI in your default web browser. The UI allows you to:
+
+- Run all tests or individual tests.
+- Filter tests by status (e.g., passed, failed).
+- View detailed test results and error messages.
+- Debug tests by stepping through the code and inspecting the browser state.
+
+The Playwright Test Runner UI is a powerful tool for developing and debugging your tests, providing a more interactive and visual approach to test execution.

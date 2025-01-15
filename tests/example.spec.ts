@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+/*test('has title', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 
   // Expect a title "to contain" a substring.
@@ -15,4 +15,15 @@ test('get started link', async ({ page }) => {
 
   // Expects page to have a heading with the name of Installation.
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+});
+*/
+test('verifySearchFeature', async ({ page }) => {
+  await page.goto('https://www.mercadolibre.com.co/');
+  await page.locator('input[id="cb1-edit"]').fill('Iphone');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('ol.ui-search-layout')).toBeVisible();
+  const titles = await page.locator('ol.ui-search-layout li h2').allInnerTexts();
+  for (let title of titles) {
+    console.log(`The title is: ${title}`);
+  }
 });
