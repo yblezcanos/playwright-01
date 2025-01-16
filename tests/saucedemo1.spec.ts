@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from './pageObject/loginPage.spec';
 
 test('purchase an item', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com');
+    const baseUrl = process.env.URL || '';
+    await page.goto(baseUrl);
     const login = new LoginPage(page);
     await login.login('standard_user', 'secret_sauce');
     const itemsContainer = await page.locator('#inventory_container .inventory_item').all();

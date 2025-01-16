@@ -141,7 +141,7 @@ In this example, the `LoginPage` class is used to navigate to the login page, pe
 To install `dotenv`, use the following command:
 
 ```sh
-npm install dotenv
+npm i dotenv --save-dev
 ```
 
 ### Using dotenv
@@ -182,3 +182,40 @@ To use `dotenv` in your Playwright project, follow these steps:
     ```
 
 By using `dotenv`, you can keep your configuration settings and sensitive information separate from your code, making your project more secure and easier to manage.
+
+## Global Setup for dotenv
+
+Instead of importing `dotenv` in each test file, you can set up a global configuration file that loads the environment variables once for all your tests.
+
+### Creating a Global Setup File
+
+1. Create a global setup file, for example, `global-setup.ts` in the root of your project:
+
+    ```typescript
+    import { FullConfig } from '@playwright/test';
+    import dotenv from 'dotenv';
+
+    async function globalSetup(config: FullConfig) {
+        dotenv.config();
+    }
+
+    export default globalSetup;
+    ```
+
+2. Update your Playwright configuration file (`playwright.config.ts`) to use the global setup file:
+
+    ```typescript
+    import { defineConfig } from '@playwright/test';
+
+    export default defineConfig({
+        globalSetup: require.resolve('./global-setup'),
+        // other configurations
+    });
+    ```
+
+By using a global setup file, you only need to load the environment variables once, and they will be available in all your test files without needing to import `dotenv` in each one.
+
+## Windows Environment Vars
+- setx /m NODE_ENV dev 
+- echo %NODE_ENV%
+- echo %PATH%
