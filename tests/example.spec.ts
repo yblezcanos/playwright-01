@@ -27,3 +27,13 @@ test('verifySearchFeature', async ({ page }) => {
     console.log(`The title is: ${title}`);
   }
 });
+
+test('verifyMisComprasButton', async ({ page }) => {
+  await page.goto('https://www.mercadolibre.com.co/');
+  await page.getByRole('link', { name: 'Mis compras' }).click();  
+});
+
+test('verifyIngresaButton', async ({ page }) => {
+  await page.goto('https://www.mercadolibre.com.co/');
+  await page.getByRole('link', { name: 'Ingresa', exact: true}).click();  
+});
