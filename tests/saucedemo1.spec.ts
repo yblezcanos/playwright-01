@@ -1,11 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from './pageObject/loginPage.spec';
 
 test('purchase an item', async ({ page }) => {
-    // Navigate to the URL
     await page.goto('https://www.saucedemo.com');
-    await page.getByRole('textbox', {name: 'Username'}).fill('standard_user');
-    await page.getByRole('textbox', {name: 'Password'}).fill('secret_sauce');
-    await page.getByRole('button', {name: 'Login'}).click();
+    const login = new LoginPage(page);
+    await login.login('standard_user', 'secret_sauce');
     const itemsContainer = await page.locator('#inventory_container .inventory_item').all();
     const randomIndex = Math.floor(Math.random() * itemsContainer.length);
     const randomItem = itemsContainer[randomIndex];
