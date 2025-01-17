@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from './pageObject/loginPage.spec';
+import { LoginPage } from './pageobject/loginPage';
 
 test('purchase an item', async ({ page }) => {
-    const baseUrl = process.env.URL || '';
-    await page.goto(baseUrl);
     const login = new LoginPage(page);
+    const baseUrl = process.env.URL || '';
+    await login.goto();
     await login.login('standard_user', 'secret_sauce');
     const itemsContainer = await page.locator('#inventory_container .inventory_item').all();
     const randomIndex = Math.floor(Math.random() * itemsContainer.length);
