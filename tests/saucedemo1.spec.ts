@@ -6,6 +6,7 @@ test('purchase an item', async ({ page }) => {
     const baseUrl = process.env.URL || '';
     await login.goto();
     await login.login('standard_user', 'secret_sauce');
+    await page.screenshot({ path: 'screenshots/saucedemo1.png' });
     const itemsContainer = await page.locator('#inventory_container .inventory_item').all();
     const randomIndex = Math.floor(Math.random() * itemsContainer.length);
     const randomItem = itemsContainer[randomIndex];
@@ -38,5 +39,6 @@ test('purchase an item', async ({ page }) => {
     await page.locator('.cart_button').click();  
     expect(page.locator('.complete-header')).toBeVisible(); 
     const resultMessage = await page.locator('.complete-header').innerText();
-    expect(resultMessage).toBe('Thank you for your order!');  
+    expect(resultMessage).toBe('Thank you for your order!');    
+    await page.screenshot({ path: 'screenshots/saucedemo2.png', fullPage: true });  
 });
