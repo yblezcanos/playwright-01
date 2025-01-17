@@ -219,3 +219,53 @@ By using a global setup file, you only need to load the environment variables on
 - setx /m NODE_ENV dev 
 - echo %NODE_ENV%
 - echo %PATH%
+## Taking Screenshots
+
+Playwright provides a straightforward way to capture screenshots of your web pages during test execution. This can be useful for debugging and visual validation.
+
+### Capturing a Full Page Screenshot
+
+To capture a screenshot of the entire page, use the `screenshot` method on the `Page` object with the `fullPage` option set to `true`:
+
+```typescript
+// screenshot.spec.ts
+import { test } from '@playwright/test';
+
+test('should take a full page screenshot', async ({ page }) => {
+    await page.goto('https://example.com');
+    await page.screenshot({ path: 'fullpage.png', fullPage: true });
+});
+```
+
+### Capturing a Screenshot of an Element
+
+To capture a screenshot of a specific element, use the `screenshot` method on the `ElementHandle` object:
+
+```typescript
+// element-screenshot.spec.ts
+import { test } from '@playwright/test';
+
+test('should take a screenshot of an element', async ({ page }) => {
+    await page.goto('https://example.com');
+    const element = await page.$('#elementId');
+    await element.screenshot({ path: 'element.png' });
+});
+```
+
+### Capturing a Screenshot on Test Failure
+
+You can also configure Playwright to automatically capture a screenshot when a test fails. This can be done in the Playwright configuration file:
+
+```typescript
+// playwright.config.ts
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+    use: {
+        screenshot: 'only-on-failure',
+    },
+    // other configurations
+});
+```
+
+By using these methods, you can easily capture screenshots during your tests, helping you to debug issues and verify the visual appearance of your web pages.
