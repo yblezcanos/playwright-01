@@ -38,6 +38,9 @@ This command executes all the tests in your project. You can also specify a part
 
 ```sh
 npx playwright test path/to/test-file.spec.ts
+```sh
+npx playwright test path/to/test-file.spec.ts -g [test name] --repeat-each [number of times]
+```
 ```
 
 Additionally, you can use various options to customize the test run, such as running tests in a specific browser, enabling headless mode, or generating a report:
