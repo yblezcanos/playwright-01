@@ -317,3 +317,98 @@ test('should block images and CSS', async ({ page }) => {
 ```
 
 By using interceptors to block images and CSS files, you can optimize your test execution and focus on the critical aspects of your web application.
+### Modifying API Responses
+
+In addition to blocking resources, Playwright allows you to modify the responses of network requests. This can be useful for testing how your application behaves with different API responses.
+
+To modify the response of an API call, you can use the `route` method to intercept the request and then use the `fulfill` method to provide a custom response. Here's an example of how to do this:
+
+```typescript
+// modify-api-response.spec.ts
+import { test } from '@playwright/test';
+
+test('should modify API response', async ({ page }) => {
+    await page.route('**/api/data', route => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ key: 'modified value' }),
+        });
+    });
+    await page.goto('https://example.com');
+    // Perform your test actions here
+});
+```
+
+In this example, the `route` method is used to intercept the network request to the specified API endpoint. The `fulfill` method is then used to provide a custom response with a modified JSON body.
+
+### Using a Helper Function
+
+You can also create a helper function to modify API responses and reuse it across multiple tests:
+
+```typescript
+// helpers.ts
+import { Page } from '@playwright/test';
+
+export async function modifyApiResponse(page: Page, url: string, response: any) {
+    await page.route(url, route => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify(response),
+        });
+    });
+}
+
+// modify-api-response.spec.ts
+import { test } from '@playwright/test';
+import { modifyApiResponse } from './helpers';
+
+test('should modify API response', async ({ page }) => {
+    await modifyApiResponse(page, '**/api/data', { key: 'modified value' });
+    await page.goto('https://example.com');
+    // Perform your test actions here
+});
+```
+
+By using interceptors to modify API responses, you can test different scenarios and ensure your application handles various API responses correctly.
+## Modifying Book List on demoqa.com
+
+Imagine the web page `https://demoqa.com/books` displays a grid with a list of books fetched from an API. You can modify this list to show only one book using Playwright's request interception and response modification capabilities.
+
+### Example: Modifying Book List
+
+Here's an example of how to intercept the API call and modify the response to show only one book:
+
+```typescript
+// modify-book-list.spec.ts
+import { test } from '@playwright/test';
+
+test('should modify book list to show only one book', async ({ page }) => {
+    await page.route('**/BookStore/v1/Books', route => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({
+                books: [
+                    {
+                        isbn: '9781449325862',
+                        title: 'Git Pocket Guide',
+                        subTitle: 'A Working Introduction',
+                        author: 'Richard E. Silverman',
+                        publish_date: '2020-06-04T08:48:39.000Z',
+                        publisher: 'O\'Reilly Media',
+                        pages: 234,
+                        description: 'This pocket guide is the perfect on-the-job companion to Git, the distributed version control system.',
+                        website: 'http://chimera.labs.oreilly.com/books/1230000000561/index.html'
+                    }
+                ]
+            }),
+        });
+    });
+    await page.goto('https://demoqa.com/books');
+    // Perform your test actions here
+});
+```
+
+In this example, the `route` method intercepts the network request to the book list API endpoint. The `fulfill` method provides a custom response with a modified JSON body containing only one book. This way, the web page will display only the specified book in the grid.
