@@ -272,3 +272,48 @@ export default defineConfig({
 ```
 
 By using these methods, you can easily capture screenshots during your tests, helping you to debug issues and verify the visual appearance of your web pages.
+## Using Interceptors to Block Images and CSS
+
+Playwright allows you to intercept network requests and modify them as needed. This can be useful for blocking certain types of resources, such as images and CSS files, to speed up your tests or reduce unnecessary network traffic.
+
+### Blocking Images and CSS
+
+To block images and CSS files, you can use the `route` method to intercept network requests and abort those that match specific patterns. Here's an example of how to do this:
+
+```typescript
+// block-resources.spec.ts
+import { test } from '@playwright/test';
+
+test('should block images and CSS', async ({ page }) => {
+    await page.route('**/*.{png,jpg,jpeg,gif,css}', route => route.abort());
+    await page.goto('https://example.com');
+    // Perform your test actions here
+});
+```
+
+In this example, the `route` method is used to intercept all network requests that match the specified patterns (images and CSS files) and abort them. This prevents these resources from being loaded, which can speed up your tests.
+
+### Using a Helper Function
+
+You can also create a helper function to block resources and reuse it across multiple tests:
+
+```typescript
+// helpers.ts
+import { Page } from '@playwright/test';
+
+export async function blockResources(page: Page) {
+    await page.route('**/*.{png,jpg,jpeg,gif,css}', route => route.abort());
+}
+
+// block-resources.spec.ts
+import { test } from '@playwright/test';
+import { blockResources } from './helpers';
+
+test('should block images and CSS', async ({ page }) => {
+    await blockResources(page);
+    await page.goto('https://example.com');
+    // Perform your test actions here
+});
+```
+
+By using interceptors to block images and CSS files, you can optimize your test execution and focus on the critical aspects of your web application.
