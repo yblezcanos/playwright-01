@@ -412,3 +412,99 @@ test('should modify book list to show only one book', async ({ page }) => {
 ```
 
 In this example, the `route` method intercepts the network request to the book list API endpoint. The `fulfill` method provides a custom response with a modified JSON body containing only one book. This way, the web page will display only the specified book in the grid.
+## Handling Environment Variables in GitHub Actions
+
+When using GitHub Actions, you may need to handle environment variables securely, especially if they contain sensitive information like API keys or passwords. Here's how you can manage environment variables in GitHub Actions to avoid errors due to local environment variables.
+
+### Storing Secrets in GitHub
+
+1. Go to your GitHub repository and click on the `Settings` tab.
+2. In the left sidebar, click on `Secrets and variables` and then `Actions`.
+3. Click on the `New repository secret` button.
+4. Add your environment variables as secrets. For example, you can add `BASE_URL`, `USERNAME`, and `PASSWORD`.
+
+### Using Secrets in GitHub Actions
+
+Once you have added your secrets, you can use them in your GitHub Actions workflow. Here's an example of how to set up a workflow that uses these secrets:
+
+```yaml
+# .github/workflows/playwright.yml
+name: Playwright Tests
+
+on: [push, pull_request]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout repository
+            uses: actions/checkout@v2
+
+        - name: Set up Node.js
+            uses: actions/setup-node@v2
+            with:
+                node-version: '14'
+
+        - name: Install dependencies
+            run: npm install
+
+        - name: Run Playwright tests
+            env:
+                BASE_URL: ${{ secrets.BASE_URL }}
+                USERNAME: ${{ secrets.USERNAME }}
+                PASSWORD: ${{ secrets.PASSWORD }}
+            run: npx playwright test
+```
+
+In this example, the `env` section under the `Run Playwright tests` step sets the environment variables using the secrets you added to your repository. This ensures that your tests have access to the necessary environment variables without exposing them in your code.
+
+By following these steps, you can securely manage environment variables in GitHub Actions and avoid errors related to local environment variables.
+### Handling Public Environment Variables in GitHub Actions
+
+In addition to sensitive environment variables, you may also have public environment variables, such as a base URL, that you want to reuse across your GitHub Actions workflows. These variables can be stored in the `Variables` section instead of `Secrets`.
+
+### Storing Variables in GitHub
+
+1. Go to your GitHub repository and click on the `Settings` tab.
+2. In the left sidebar, click on `Secrets and variables` and then `Actions`.
+3. Click on the `New repository variable` button.
+4. Add your environment variables. For example, you can add `PUBLIC_BASE_URL`.
+
+### Using Variables in GitHub Actions
+
+Once you have added your variables, you can use them in your GitHub Actions workflow. Here's an example of how to set up a workflow that uses these variables:
+
+```yaml
+# .github/workflows/playwright.yml
+name: Playwright Tests
+
+on: [push, pull_request]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout repository
+            uses: actions/checkout@v2
+
+        - name: Set up Node.js
+            uses: actions/setup-node@v2
+            with:
+                node-version: '14'
+
+        - name: Install dependencies
+            run: npm install
+
+        - name: Run Playwright tests
+            env:
+                BASE_URL: ${{ vars.PUBLIC_BASE_URL }}
+                USERNAME: ${{ secrets.USERNAME }}
+                PASSWORD: ${{ secrets.PASSWORD }}
+            run: npx playwright test
+```
+
+In this example, the `env` section under the `Run Playwright tests` step sets the `BASE_URL` environment variable using the public variable you added to your repository. This allows you to reuse the base URL across your workflows without exposing it as a secret.
+
+By following these steps, you can manage both sensitive and public environment variables in GitHub Actions, ensuring your workflows are secure and maintainable.
