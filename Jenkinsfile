@@ -1,25 +1,30 @@
 pipeline {
     agent any
     tools {
-        nodejs 'NodeJS-Project-Version' // Asegúrate de configurar Node.js en Jenkins
+        nodejs 'NodeJS-Project-Version'
     }
     environment {
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = '1' // Si ya tienes Playwright instalado
+        PLAYWRIGHT_BROWSERS_PATH = '/var/jenkins_home/playwright-browsers'
     }
     stages {
         stage('Clone repository') {
             steps {
-                checkout scm // Clona el repositorio desde el SCM configurado
+                checkout scm
             }
         }
         stage('Install dependencies') {
             steps {
-                sh 'npm install' // Instala dependencias, incluyendo Playwright
+                sh 'npm install'
+            }
+        }
+        stage('Install browsers') {
+            steps {
+                sh 'npx playwright install --with-deps'
             }
         }
         stage('Run Playwright tests') {
             steps {
-                sh 'npx playwright test' // Ejecuta las pruebas
+                sh 'npx playwright test'
             }
         }
     }
