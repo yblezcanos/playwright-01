@@ -1,5 +1,10 @@
 pipeline {
    agent { docker { image 'mcr.microsoft.com/playwright:v1.49.1-noble' } }
+   environment {
+            BASE_URL = credentials('BASE_URL')
+            USERNAME = credentials('USERNAME')
+            PASSWORD = credentials('PASSWORD')
+        }
    stages {
       stage('e2e-tests') {
          steps {
