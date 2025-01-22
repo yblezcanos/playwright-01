@@ -508,3 +508,83 @@ jobs:
 In this example, the `env` section under the `Run Playwright tests` step sets the `BASE_URL` environment variable using the public variable you added to your repository. This allows you to reuse the base URL across your workflows without exposing it as a secret.
 
 By following these steps, you can manage both sensitive and public environment variables in GitHub Actions, ensuring your workflows are secure and maintainable.
+## CI/CD with Jenkins and Playwright using Docker
+
+In this section, we will set up a CI/CD pipeline using Jenkins and Playwright with Docker. We will create a Jenkins container that can run Docker commands and use it to run Playwright tests in another container.
+
+### Setting Up Jenkins with Docker
+
+First, let's create a Dockerfile to set up Jenkins with Docker installed:
+
+```Dockerfile
+# Dockerfile
+FROM jenkins/jenkins:lts-jdk17
+
+USER root
+RUN curl -fsSL https://get.docker.com/ | sh
+USER jenkins
+```
+
+Build the Docker image with the following command:
+
+```sh
+docker build --tag docker-in-docker-jenkins .
+```
+
+Run the Jenkins container with Docker support:
+
+```sh
+docker run --rm --group-add 0 -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -v jenkins_home:/var/jenkins_home --name jenkins docker-in-docker-jenkins
+```
+
+### Configuring Jenkins
+
+1. Access Jenkins by navigating to `http://localhost:8080` in your web browser.
+2. Follow the setup instructions to unlock Jenkins, install suggested plugins, and create an admin user.
+3. Install the "Docker" and "Pipeline" plugins from the Jenkins plugin manager.
+
+### Creating a Jenkins Pipeline for Playwright
+
+Create a Jenkins pipeline job and configure it with the following pipeline script:
+
+```groovy
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'mcr.microsoft.com/playwright:v1.30.0-focal'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Run Playwright Tests') {
+            steps {
+                script {
+                    docker.image(DOCKER_IMAGE).inside {
+                        sh 'npx playwright test'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: '**/test-results/**/*', allowEmptyArchive: true
+            junit 'test-results/**/*.xml'
+        }
+    }
+}
+```
+
+### Running the Pipeline
+
+1. Save the pipeline configuration and run the job.
+2. Jenkins will pull the specified Playwright Docker image, run the tests, and archive the test results.
+
+By following these steps, you can set up a CI/CD pipeline with Jenkins and Playwright using Docker, allowing you to automate your end-to-end tests efficiently.
