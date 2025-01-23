@@ -1,5 +1,5 @@
 # playwright-01
-## Creating a Playwright Project-tst
+## Creating a Playwright Project
 
 To create a new Playwright project, you can use the following command:
 
