@@ -3,7 +3,7 @@ import { LoginPage } from './pageobject/loginPage';
 
 test('purchase an item', async ({ page }) => {
     const login = new LoginPage(page);
-    const baseUrl = process.env.URL || '';
+    const baseUrl = process.env.BASE_URL || '';
     await login.goto();
     await login.login('standard_user', 'secret_sauce');
     await page.screenshot({ path: 'screenshots/saucedemo1.png' });
