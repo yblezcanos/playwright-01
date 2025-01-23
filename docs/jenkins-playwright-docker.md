@@ -79,6 +79,7 @@ Now that Jenkins is set up, let's create a Jenkins pipeline to run Playwright te
       stage('e2e-tests') {
          steps {
             git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'develop'
+            //importando variables de entorno
             withCredentials([string(credentialsId: 'BASE_URL', variable: 'BASE_URL')]) {
                // Instala dependencias
                sh 'npm ci'
@@ -113,3 +114,58 @@ Now that Jenkins is set up, let's create a Jenkins pipeline to run Playwright te
     - Click "Save".
 
 3. Run the pipeline by clicking "Build Now" in the pipeline job.
+
+### Managing Environment Variables in Jenkins
+
+In this section, we will explain how to handle environment variables in Jenkins. For this example, we will create environment variables in Jenkins and use them in the `Jenkinsfile` with the `withCredentials` step.
+
+#### Creating Environment Variables in Jenkins
+
+1. Go to Jenkins dashboard and click on "Manage Jenkins".
+2. Click on "Manage Credentials".
+3. Select the appropriate domain (e.g., "Global credentials").
+4. Click on "Add Credentials" on the left menu.
+5. Choose "Secret text" from the "Kind" dropdown.
+6. Enter the environment variable value in the "Secret" field.
+7. Provide an ID for the credential (e.g., `BASE_URL`).
+8. Click "OK" to save the credential.
+
+#### Using Environment Variables in Jenkinsfile
+
+In your `Jenkinsfile`, you can use the `withCredentials` step to access the environment variables. Here is an example:
+
+```groovy
+pipeline {
+    agent { docker { image 'mcr.microsoft.com/playwright:v1.49.1-noble' } }
+    
+    stages {
+        stage('e2e-tests') {
+            steps {
+                git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'develop'
+                // Importing environment variables
+                withCredentials([string(credentialsId: 'BASE_URL', variable: 'BASE_URL')]) {
+                    // Install dependencies
+                    sh 'npm ci'
+
+                    // Run tests using the environment variable
+                    sh 'BASE_URL=$BASE_URL npx playwright test'
+                }
+            }
+        }
+    }
+    post {
+         always{
+                publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'playwright-report',
+                                reportFiles: 'index.html',
+                                reportName: 'Playwright Test Report'
+                          ])
+         }
+    }
+}
+```
+
+In this example, the `withCredentials` step is used to inject the `BASE_URL` environment variable into the shell commands. This allows you to securely manage and use environment variables in your Jenkins pipeline.
