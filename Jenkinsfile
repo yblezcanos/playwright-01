@@ -1,7 +1,7 @@
 pipeline {
    agent { docker { image 'mcr.microsoft.com/playwright:v1.49.1-noble' } }
    environment {
-        URL = 'https://www.saucedemo.com/' // Sobrescribe el valor del .env en CI
+        BASE_URL = 'https://www.saucedemo.com/' // Sobrescribe el valor del .env en CI
     }
    
    stages {
