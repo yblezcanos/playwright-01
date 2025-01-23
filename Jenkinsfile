@@ -4,7 +4,7 @@ pipeline {
    stages {
       stage('e2e-tests') {
          steps {
-            git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'main'
+            git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'develop'
             sh 'npm ci'
             sh 'npx playwright test'
          }
