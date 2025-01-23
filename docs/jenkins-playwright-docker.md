@@ -63,7 +63,7 @@ Imagen personalizada: Parece ser una imagen que combina Jenkins con la funcional
 
 1. Access Jenkins by navigating to `http://localhost:8080` in your web browser.
 2. Follow the setup instructions to unlock Jenkins, install suggested plugins, and create an admin user.
-3. Install the "Docker plugin", "Pipeline" and HTML Publisher plugin plugins from the Jenkins plugin manager.
+3. Install the "Docker plugin", "Pipeline" and "HTML Publisher" plugin plugins from the Jenkins plugin manager.
 
 ### Creating a Jenkins Pipeline
 
