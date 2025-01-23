@@ -460,6 +460,7 @@ jobs:
 In this example, the `env` section under the `Run Playwright tests` step sets the environment variables using the secrets you added to your repository. This ensures that your tests have access to the necessary environment variables without exposing them in your code.
 
 By following these steps, you can securely manage environment variables in GitHub Actions and avoid errors related to local environment variables.
+
 ### Handling Public Environment Variables in GitHub Actions
 
 In addition to sensitive environment variables, you may also have public environment variables, such as a base URL, that you want to reuse across your GitHub Actions workflows. These variables can be stored in the `Variables` section instead of `Secrets`.
@@ -508,3 +509,9 @@ jobs:
 In this example, the `env` section under the `Run Playwright tests` step sets the `BASE_URL` environment variable using the public variable you added to your repository. This allows you to reuse the base URL across your workflows without exposing it as a secret.
 
 By following these steps, you can manage both sensitive and public environment variables in GitHub Actions, ensuring your workflows are secure and maintainable.
+
+## CI/CD with Jenkins and Playwright using Docker
+- [CI/CD with Jenkins and Playwright using Docker](./docs/jenkins-playwright-docker.md)
+### Configuring Content Security Policy (CSP) in Jenkins for html reports
+- [Securely Configuring Content Security Policy (CSP) in Jenkins](./docs/secure-csp-jenkins.md)
+
