@@ -510,6 +510,8 @@ In this example, the `env` section under the `Run Playwright tests` step sets th
 
 By following these steps, you can manage both sensitive and public environment variables in GitHub Actions, ensuring your workflows are secure and maintainable.
 
+## CI/CD with Jenkins and Playwright using Docker
 - [CI/CD with Jenkins and Playwright using Docker](./docs/jenkins-playwright-docker.md)
+### Configuring Content Security Policy (CSP) in Jenkins for html reports
 - [Securely Configuring Content Security Policy (CSP) in Jenkins](./docs/secure-csp-jenkins.md)
 
