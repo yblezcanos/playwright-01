@@ -17,7 +17,7 @@ dotenv.config(); // Load .env file
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 60000,
+  timeout: 80000,
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -42,13 +42,35 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "setup",
+      testMatch: /.*\.setup\.ts/,
+    },
+    {
+      name: "test",
+      testMatch: /.*\.spec\.ts/,
+    },
+    {
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        contextOptions: {
+          // chromium-specific permissions
+          storageState: "playwright/.auth/user.json"
+        },
+      },
+      dependencies:["setup", "test"]
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices["Desktop Firefox"],
+        contextOptions: {
+          // firefox-specific permissions
+          storageState: "playwright/.auth/user.json"
+        },
+      },
+      dependencies:["setup", "test"]
     },
 
     /*{

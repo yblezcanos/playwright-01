@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from './pageobject/loginPage';
-
+test.use({storageState: {cookies:[], origins:[]}})
 test('purchase an item', async ({ page }) => {
     const login = new LoginPage(page);
     const baseUrl = process.env.BASE_URL || '';
