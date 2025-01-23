@@ -1,15 +1,17 @@
 pipeline {
    agent { docker { image 'mcr.microsoft.com/playwright:v1.49.1-noble' } }
-   environment {
-        BASE_URL = 'https://www.saucedemo.com/' // Sobrescribe el valor del .env en CI
-    }
    
    stages {
       stage('e2e-tests') {
          steps {
             git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'develop'
-            sh 'npm ci'
-            sh 'BASE_URL=$BASE_URL npx playwright test'
+            withCredentials([string(credentialsId: 'BASE_URL', variable: 'BASE_URL')]) {
+               // Instala dependencias
+               sh 'npm ci'
+
+               // Corre las pruebas usando la variable de entorno
+               sh 'BASE_URL=$BASE_URL npx playwright test'
+            }
          }
       }
    }

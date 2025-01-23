@@ -460,6 +460,7 @@ jobs:
 In this example, the `env` section under the `Run Playwright tests` step sets the environment variables using the secrets you added to your repository. This ensures that your tests have access to the necessary environment variables without exposing them in your code.
 
 By following these steps, you can securely manage environment variables in GitHub Actions and avoid errors related to local environment variables.
+
 ### Handling Public Environment Variables in GitHub Actions
 
 In addition to sensitive environment variables, you may also have public environment variables, such as a base URL, that you want to reuse across your GitHub Actions workflows. These variables can be stored in the `Variables` section instead of `Secrets`.
@@ -585,17 +586,18 @@ Now that Jenkins is set up, let's create a Jenkins pipeline to run Playwright te
     ```groovy
     pipeline {
    agent { docker { image 'mcr.microsoft.com/playwright:v1.49.1-noble' } }
-   environment {
-            BASE_URL = credentials('BASE_URL')
-            USERNAME = credentials('USERNAME')
-            PASSWORD = credentials('PASSWORD')
-        }
+   
    stages {
       stage('e2e-tests') {
          steps {
-            git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'main'
-            sh 'npm ci'
-            sh 'npx playwright test'
+            git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'develop'
+            withCredentials([string(credentialsId: 'BASE_URL', variable: 'BASE_URL')]) {
+               // Instala dependencias
+               sh 'npm ci'
+
+               // Corre las pruebas usando la variable de entorno
+               sh 'BASE_URL=$BASE_URL npx playwright test'
+            }
          }
       }
    }
