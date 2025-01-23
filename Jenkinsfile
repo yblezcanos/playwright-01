@@ -9,7 +9,7 @@ pipeline {
          steps {
             git url: 'https://github.com/yblezcanos/playwright-01.git', branch: 'develop'
             sh 'npm ci'
-            sh 'URL=$URL npx playwright test'
+            sh 'BASE_URL=$BASE_URL npx playwright test'
          }
       }
    }
