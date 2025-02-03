@@ -38,10 +38,10 @@ This command executes all the tests in your project. You can also specify a part
 
 ```sh
 npx playwright test path/to/test-file.spec.ts
-```sh
+
 npx playwright test path/to/test-file.spec.ts -g [test name] --repeat-each [number of times]
 ```
-```
+
 
 Additionally, you can use various options to customize the test run, such as running tests in a specific browser, enabling headless mode, or generating a report:
 
@@ -85,6 +85,54 @@ This command opens the Playwright Test Runner UI in your default web browser. Th
 - Debug tests by stepping through the code and inspecting the browser state.
 
 The Playwright Test Runner UI is a powerful tool for developing and debugging your tests, providing a more interactive and visual approach to test execution.
+## Using Playwright Codegen
+
+Playwright Codegen is a powerful tool that helps you generate Playwright scripts by recording your interactions with a web page. This can significantly speed up the process of writing tests by providing you with a starting point that you can then customize as needed.
+
+### Generating Code with Codegen
+
+To start using Playwright Codegen, run the following command:
+
+```sh
+npx playwright codegen
+```
+
+This command opens a browser window and a code generation window. As you interact with the web page in the browser, Playwright Codegen records your actions and generates the corresponding code in the code generation window.
+
+### Specifying a URL
+
+You can also specify a URL to open when starting Playwright Codegen:
+
+```sh
+npx playwright codegen https://example.com
+```
+
+This command opens the specified URL in the browser, allowing you to start recording your interactions immediately.
+
+### Customizing the Generated Code
+
+Once you have finished recording your interactions, you can copy the generated code and customize it to fit your needs. The generated code provides a solid foundation that you can build upon, adding assertions, loops, and other logic as required.
+
+### Example of Generated Code
+
+Here's an example of what the generated code might look like:
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('example test', async ({ page }) => {
+    await page.goto('https://example.com');
+    await page.click('text=Login');
+    await page.fill('input[name="username"]', 'myUsername');
+    await page.fill('input[name="password"]', 'myPassword');
+    await page.click('text=Submit');
+    await expect(page).toHaveURL('https://example.com/dashboard');
+});
+```
+
+In this example, the generated code navigates to a URL, performs a series of actions (clicking, filling inputs), and includes an assertion to verify the final URL.
+
+By using Playwright Codegen, you can quickly generate the initial code for your tests, saving time and reducing the effort required to write comprehensive end-to-end tests.
 ## Creating and Using a Page Object
 
 A Page Object is a design pattern that helps you create an abstraction layer over the UI of your application. This pattern makes your tests more readable, maintainable, and reusable by encapsulating the page structure and interactions in a separate class.
