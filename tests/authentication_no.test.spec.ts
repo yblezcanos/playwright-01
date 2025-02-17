@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "./pageobject/loginPage";
 
-test.use({storageState: {cookies:[], origins:[]}})
+test.use({storageState: {cookies:[], origins:[]}})//no utilizar el storageState que almacena las cookie de la sesion
 
 test("purchase an item", async ({ page }) => {
   await page.goto("https://www.saucedemo.com/inventory.html");
