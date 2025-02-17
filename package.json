@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "test:regretion": "npx playwright test --grep @regretion",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:integration:smoke": "jest --findRelatedTests src/utils/helper.js",
+    "test:integration:regretion": "jest --testNamePattern=\"regretion\"",
+    "test:integration:test_impact_analysis": "jest --onlyChanged"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
